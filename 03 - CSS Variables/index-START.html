@@ -1,52 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Scoped CSS Variables and JS</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Scoped CSS Variables and JS</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <h2>Update CSS Variables with <span class="hl">JS</span></h2>
 
-  <div class="controls">
-    <label for="spacing">Spacing:</label>
-    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <div class="controls">
+      <label for="spacing">Spacing:</label>
+      <input
+        id="spacing"
+        type="range"
+        name="spacing"
+        min="10"
+        max="200"
+        value="10"
+        data-sizing="px"
+      />
 
-    <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+      <label for="blur">Blur:</label>
+      <input
+        id="blur"
+        type="range"
+        name="blur"
+        min="0"
+        max="25"
+        value="10"
+        data-sizing="px"
+      />
 
-    <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
-  </div>
+      <label for="base">Base Color</label>
+      <input id="base" type="color" name="base" value="#ffc600" />
+    </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+    <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500" />
 
-  <style>
-
-    /*
+    <style>
+      /*
       misc styles, nothing to do with CSS variables
     */
+      :root {
+        --base: yellow;
+        --spacing: 5px;
+        --blur: 5px;
+      }
 
-    body {
-      text-align: center;
-      background: #193549;
-      color: white;
-      font-family: 'helvetica neue', sans-serif;
-      font-weight: 100;
-      font-size: 50px;
-    }
+      img {
+        padding: var(--spacing);
+        background: var(--base);
+        filter: blur(var(--blur));
+      }
 
-    .controls {
-      margin-bottom: 50px;
-    }
+      body {
+        text-align: center;
+        background: #193549;
+        color: white;
+        font-family: "helvetica neue", sans-serif;
+        font-weight: 100;
+        font-size: 50px;
+      }
 
-    input {
-      width: 100px;
-    }
-  </style>
+      .controls {
+        margin-bottom: 50px;
+      }
 
-  <script>
-  </script>
+      input {
+        width: 100px;
+      }
+    </style>
 
-</body>
+    <script>
+      // get the value of the control dials DONE
+      const applyChange = (e) => {
+        // use e here for clarity, if we don't pass the event e, we can access spacing with this.value
+        let spacing = e.target.value;
+        let name = e.target.name;
+        let suffix = e.target.dataset.sizing || "";
+        console.log(name, spacing, suffix);
+        // documentElement gives us the root element of the document
+        document.documentElement.style.setProperty(
+          `--${name}`,
+          `${spacing}${suffix}`
+        );
+      };
+
+      let inputs = document.querySelectorAll(".controls input");
+
+      inputs.forEach((input) => input.addEventListener("change", applyChange));
+    </script>
+  </body>
 </html>
